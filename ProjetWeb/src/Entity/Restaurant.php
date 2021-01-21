@@ -44,9 +44,15 @@ class Restaurant
      */
     private $plats;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Type::class, mappedBy="restaurant")
+     */
+    private $type;
+
     public function __construct()
     {
         $this->plats = new ArrayCollection();
+        $this->type = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,6 +132,36 @@ class Restaurant
             // set the owning side to null (unless already changed)
             if ($plat->getRestaurant() === $this) {
                 $plat->setRestaurant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Type[]
+     */
+    public function getType(): Collection
+    {
+        return $this->type;
+    }
+
+    public function addType(Type $type): self
+    {
+        if (!$this->type->contains($type)) {
+            $this->type[] = $type;
+            $type->setRestaurant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeType(Type $type): self
+    {
+        if ($this->type->removeElement($type)) {
+            // set the owning side to null (unless already changed)
+            if ($type->getRestaurant() === $this) {
+                $type->setRestaurant(null);
             }
         }
 
