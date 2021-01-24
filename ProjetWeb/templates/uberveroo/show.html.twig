@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}show{% endblock %}
+
+{% block body %}
+
+<center><h1>{{resto.nom}}</h1></center>
+<center><img src={{resto.logo}}/></center>
+<p>Adresse: {{resto.adresse}}</p>
+<p>Contact: {{resto.email}}</p>
+<h2 style="text-align: center";>Plats disponibles</h2>
+<div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center;">
+</div>
+<br/>
+<div class="row row-cols-1 row-cols-md-5">
+{% for plats in resto.plats %}
+    <div class="col">
+        <div class="card border-dark mb-3" style="max-width: 20rem;  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+         <img
+          src={{plats.photo}}
+    
+        />
+        <div class="card-body">
+         <h5 class="card-title">{{plats.nom}}</h5>
+         <p class="card-text">
+             {{plats.description}}
+            </p>
+         <a href="{{path('commander', {'id':resto.id}) }}" class="btn btn-success">Commander</a>
+         </div>
+        </div>
+    </div>
+
+
+{% endfor %}
+   
+
+{% endblock %}

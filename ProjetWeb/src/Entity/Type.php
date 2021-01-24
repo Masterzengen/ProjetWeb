@@ -27,6 +27,12 @@ class Type
      */
     private $restaurant;
 
+
+    public function __toString(): string
+    {
+        return $this->regime;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
