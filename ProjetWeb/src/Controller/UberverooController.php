@@ -123,12 +123,6 @@ class UberverooController extends AbstractController
         }
 
         $form = $this->createForm(PlatsType::class, $plat);
-
-        
-
-       
-   
-
         $form->handleRequest($request);
        
         $repo = $this->getDoctrine()->getRepository(Restaurant::class);
@@ -159,13 +153,24 @@ class UberverooController extends AbstractController
 
     public function supprimer($id, EntityManagerInterface $em){
         $repo = $this->getDoctrine()->getRepository(Restaurant::class)->find($id);
-        
-
-
-
         $em->remove($repo);
         $em->flush();
         return $this->redirectToRoute('restaurants');
+
+     }
+
+         /**
+     * @Route ("/Restaurant/supprimerPlats/{id}", name="supprimerPlats")
+     */
+
+    public function supprimerPlats($id, EntityManagerInterface $em){
+        $plats = $this->getDoctrine()->getRepository(Plats::class)->find($id);
+        $resto = $plats->getRestaurant();
+        $resto->removePlat($plats);
+        $em->persist($resto);
+        $em->remove($plats);
+        $em->flush();
+        return $this->redirectToRoute('restoShow',['id'=>$resto->getId()]);
 
      }
 
