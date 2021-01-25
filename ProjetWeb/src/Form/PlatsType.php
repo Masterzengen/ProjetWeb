@@ -16,7 +16,7 @@ class PlatsType extends AbstractType
             ->add('photo')
             ->add('description')
             ->add('prix')
-            ->add('restaurant')
+            
         ;
     }
 

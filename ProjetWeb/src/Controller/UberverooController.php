@@ -84,6 +84,8 @@ class UberverooController extends AbstractController
 
          $form->handleRequest($request);
 
+         
+
 
         if($form->isSubmitted() ){
             $plats = new Plats();
@@ -96,7 +98,7 @@ class UberverooController extends AbstractController
             $resto->addPlat($plats);
             $em->persist($resto);
             $em->flush();
-            return $this->redirectToRoute('restoShow',['id'=>$resto->getId()]);
+            return $this->redirectToRoute('ajouterplat',['id'=>$resto->getId()]);
         }
 
 
@@ -107,6 +109,66 @@ class UberverooController extends AbstractController
 
 
      }
+
+
+           /**
+     * @Route ("/ajouter/plat/{id}", name="ajouterplat")
+     * @Route ("/editer/plat/{id}", name ="editplat")
+     */
+
+    public function ajouterPlat(Plats $plat = null, Request $request, EntityManagerInterface $em, $id){
+       
+        if(!$plat){
+           $plat = new Plats(); 
+        }
+
+        $form = $this->createForm(PlatsType::class, $plat);
+
+        
+
+       
+   
+
+        $form->handleRequest($request);
+       
+        $repo = $this->getDoctrine()->getRepository(Restaurant::class);
+        $resto = $repo->find($id);
+
+
+       if($form->isSubmitted() ){
+            $plat->setRestaurant($resto);
+           $em->persist($plat);
+           $resto->addPlat($plat);
+           $em->persist($resto);
+           $em->flush();
+           return $this->redirectToRoute('restoShow',['id'=>$resto->getId()]);
+       }
+
+
+        return $this->render('uberveroo/ajouterPlats.html.twig',[
+            "form" => $form->createView()
+        ]);
+
+
+
+    }
+
+    /**
+     * @Route ("/Restaurant/supprimer/{id}", name="supprimer")
+     */
+
+    public function supprimer($id, EntityManagerInterface $em){
+        $repo = $this->getDoctrine()->getRepository(Restaurant::class)->find($id);
+        
+
+
+
+        $em->remove($repo);
+        $em->flush();
+        return $this->redirectToRoute('restaurants');
+
+     }
+
 
 
 }

@@ -40,7 +40,7 @@ class Restaurant
     private $logo;
 
     /**
-     * @ORM\OneToMany(targetEntity=Plats::class, mappedBy="restaurant")
+     * @ORM\OneToMany(targetEntity=Plats::class, mappedBy="restaurant", cascade={"remove"})
      */
     private $plats;
 
