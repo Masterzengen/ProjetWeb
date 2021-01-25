@@ -11,7 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Restaurant;
-
+use App\Entity\Plats;
+use App\Form\PlatsType;
+use App\Form\RestaurantType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -62,6 +64,48 @@ class UberverooController extends AbstractController
         return $this->render('uberveroo/commander.html.twig', [
             'resto' => $resto
         ]);
+     }
+
+         /**
+     * @Route ("/ajouter", name="ajouter")
+     * @Route ("/editer/{id}", name ="edit")
+     */
+
+    public function ajouter(Restaurant $resto = null, Request $request, EntityManagerInterface $em){
+       
+         if(!$resto){
+            $resto = new Restaurant(); 
+         }
+
+         
+
+         $form = $this->createForm(RestaurantType::class, $resto);
+    
+
+         $form->handleRequest($request);
+
+
+        if($form->isSubmitted() ){
+            $plats = new Plats();
+            $plats->setNom("Template temporaire")
+                ->setDescription("Description temporaire")
+                ->setPrix("0")
+                ->setPhoto("http://placehold.it/100x100")
+                ->setRestaurant($resto);
+            $em->persist($plats);
+            $resto->addPlat($plats);
+            $em->persist($resto);
+            $em->flush();
+            return $this->redirectToRoute('restoShow',['id'=>$resto->getId()]);
+        }
+
+
+         return $this->render('uberveroo/ajouter.html.twig',[
+             "form" => $form->createView()
+         ]);
+
+
+
      }
 
 

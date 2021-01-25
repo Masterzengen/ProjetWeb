@@ -49,6 +49,11 @@ class Restaurant
      */
     private $type;
 
+
+    public function __toString() {
+        return $this->nom;
+    }
+
     public function __construct()
     {
         $this->plats = new ArrayCollection();
