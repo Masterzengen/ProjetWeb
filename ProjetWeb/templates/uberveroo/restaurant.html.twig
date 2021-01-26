@@ -21,7 +21,7 @@
     <div class="card border-dark mb-3" style="max-width: 20rem; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
     <div class="card-header" style =" font-size: 0.3em;"> {{resto.adresse}}  </div>
       <img
-        src="https://mdbootstrap.com/img/new/standard/city/041.jpg"
+        src="https://picsum.photos/id/292/150/150"
         class="card-img-top"
         alt="..."
       />
@@ -31,7 +31,10 @@
         desc
         </p>
         <a href="{{path('restoShow', {'id':resto.id}) }}" class="btn btn-primary">Montrer</a>
+				{% if  app.user %}
         <a href="{{path('supprimer', {'id':resto.id}) }}" class="btn btn-danger">Supprimer</a>
+        {% endif %}
+
       </div>
     </div>
   </div>

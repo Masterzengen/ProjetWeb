@@ -32,9 +32,19 @@ class UberverooController extends AbstractController
     * @Route("/restaurants", name="restaurants")
     */
 
-    public function restaurantsListe(){
+    public function restaurantsListe(EntityManagerInterface $em){
         $repo = $this->getDoctrine()->getRepository(Restaurant::class);
         $resto = $repo->findAll();
+
+        
+   
+        /*
+        $usersCount = $em->getRepository('User')->count();
+        $repoContent = $this->$em->getRepository(Content::class);
+        $editContentCount = $repoContent->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->getQuery()
+            ->getResult();*/
         return $this->render('uberveroo/restaurant.html.twig',[
             'restaurants' => $resto
         ]);
