@@ -77,16 +77,8 @@ class UberverooController extends AbstractController
             $resto = new Restaurant(); 
          }
 
-         
-
          $form = $this->createForm(RestaurantType::class, $resto);
-    
-
          $form->handleRequest($request);
-
-         
-
-
         if($form->isSubmitted() ){
             $plats = new Plats();
             $plats->setNom("Template temporaire")
@@ -106,14 +98,10 @@ class UberverooController extends AbstractController
              "form" => $form->createView()
          ]);
 
-
-
      }
 
-
-           /**
+    /**
      * @Route ("/ajouter/plat/{id}", name="ajouterplat")
-     * @Route ("/editer/plat/{id}", name ="editplat")
      */
 
     public function ajouterPlat(Plats $plat = null, Request $request, EntityManagerInterface $em, $id){
@@ -146,6 +134,42 @@ class UberverooController extends AbstractController
 
 
     }
+
+    /**
+     * @Route ("/editer/plat/{id}", name ="editplat")
+     */
+
+    public function editerPlat( Request $request, EntityManagerInterface $em, $id){
+       
+        $plat = $this->getDoctrine()->getRepository(Plats::class)->find($id);
+         $form = $this->createForm(PlatsType::class, $plat);
+        /* $form->handleRequest($request);
+        $resto = $plat->getRestaurant();
+        
+ 
+ 
+        if($form->isSubmitted() ){
+             
+            $em->persist($plat);
+      
+            
+            $em->flush();
+            return $this->redirectToRoute('restoShow',['id'=>$resto->getId()]);
+        }
+ */
+ 
+         return $this->render('uberveroo/ajouterPlats.html.twig',[
+             "form" => $form->createView()
+         ]);
+ 
+ 
+
+
+
+    }
+
+
+
 
     /**
      * @Route ("/Restaurant/supprimer/{id}", name="supprimer")
