@@ -24,7 +24,10 @@ class UberverooController extends AbstractController
      */
     public function index(): Response
     {
+        $repo = $this->getDoctrine()->getRepository(Restaurant::class);
+        $resto = $repo->findAll();
         return $this->render('uberveroo/index.html.twig', [
+            'restaurants' => $resto
             
         ]);
     }
@@ -69,10 +72,11 @@ class UberverooController extends AbstractController
      */
 
      public function commander($id){
-        $repo = $this->getDoctrine()->getRepository(Restaurant::class);
-        $resto = $repo->find($id);
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $repo = $this->getDoctrine()->getRepository(Plats::class);
+        $Plat = $repo->find($id);
         return $this->render('uberveroo/commander.html.twig', [
-            'resto' => $resto
+            'plat' => $Plat
         ]);
      }
 
@@ -85,11 +89,6 @@ class UberverooController extends AbstractController
        
          if(!$resto){
             $resto = new Restaurant(); 
-         }
-
-         $form = $this->createForm(RestaurantType::class, $resto);
-         $form->handleRequest($request);
-        if($form->isSubmitted() ){
             $plats = new Plats();
             $plats->setNom("Template temporaire")
                 ->setDescription("Description temporaire")
@@ -98,9 +97,22 @@ class UberverooController extends AbstractController
                 ->setRestaurant($resto);
             $em->persist($plats);
             $resto->addPlat($plats);
+         }
+
+         $form = $this->createForm(RestaurantType::class, $resto);
+         $form->handleRequest($request);
+        if($form->isSubmitted() ){
+           /* $plats = new Plats();
+            $plats->setNom("Template temporaire")
+                ->setDescription("Description temporaire")
+                ->setPrix("0")
+                ->setPhoto("http://placehold.it/100x100")
+                ->setRestaurant($resto);
+            $em->persist($plats);
+            $resto->addPlat($plats);*/
             $em->persist($resto);
             $em->flush();
-            return $this->redirectToRoute('ajouterplat',['id'=>$resto->getId()]);
+            return $this->redirectToRoute('restoShow',['id'=>$resto->getId()]);
         }
 
 
@@ -153,7 +165,7 @@ class UberverooController extends AbstractController
        
         $plat = $this->getDoctrine()->getRepository(Plats::class)->find($id);
          $form = $this->createForm(PlatsType::class, $plat);
-        /* $form->handleRequest($request);
+         $form->handleRequest($request);
         $resto = $plat->getRestaurant();
         
  
@@ -166,7 +178,7 @@ class UberverooController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('restoShow',['id'=>$resto->getId()]);
         }
- */
+ 
  
          return $this->render('uberveroo/ajouterPlats.html.twig',[
              "form" => $form->createView()

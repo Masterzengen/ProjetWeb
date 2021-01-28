@@ -5,7 +5,12 @@
 {% block body %}
 
 
-<h1>Page de commande de : {{app.user}}</h1>
+<center><h1>Commander: <br/>  {{ plat.nom }}<br/> {{ plat.photo }}</h1></center>
+<p>Description: {{ plat.description }}</p>
+<br/>
+<p>Prix total (plus les frais de livraison): {{ plat.prix }}€ + 2,5€ </p>
+<br/>
+<p><a href="{{path('uberveroo') }}" class="btn btn-success">Payer</a></p>
    
 
 {% endblock %}

@@ -8,6 +8,7 @@
 <center><img src={{resto.logo}}/></center>
 <p>Adresse: {{resto.adresse}}</p>
 <p>Contact: {{resto.email}}</p>
+
 {% if  app.user %}
 <a href="{{path('edit', {'id':resto.id}) }}" class="btn btn-info">Modifier</a>
 <br/>
@@ -32,9 +33,10 @@
          <p class="card-text">
              {{plats.description}}
             </p>
-         <a href="{{path('commander', {'id':resto.id}) }}" class="btn btn-success">Commander</a>
+            <p>Prix: {{plats.prix}}€</p>
+         <a href="{{path('commander', {'id':plats.id}) }}" class="btn btn-success">Commander</a>
          {% if  app.user %}
-         <a href="{{path('editplat', {'id':resto.id}) }}" class="btn btn-info">Modifier</a>
+         <a href="{{path('editplat', {'id':plats.id}) }}" class="btn btn-info">Modifier</a>
          <a href="{{path('supprimerPlats', {'id':plats.id}) }}" class="btn btn-danger">Supprimer</a>
          {% endif %}
          </div>

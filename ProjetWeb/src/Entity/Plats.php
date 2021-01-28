@@ -32,16 +32,18 @@ class Plats
      */
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $prix;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=Restaurant::class, inversedBy="plats")
      * @ORM\JoinColumn(nullable=false)
      */
     private $restaurant;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $prix;
 
     public function getId(): ?int
     {
@@ -84,17 +86,7 @@ class Plats
         return $this;
     }
 
-    public function getPrix(): ?string
-    {
-        return $this->prix;
-    }
 
-    public function setPrix(string $prix): self
-    {
-        $this->prix = $prix;
-
-        return $this;
-    }
 
     public function getRestaurant(): ?Restaurant
     {
@@ -104,6 +96,18 @@ class Plats
     public function setRestaurant(?Restaurant $restaurant): self
     {
         $this->restaurant = $restaurant;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): self
+    {
+        $this->prix = $prix;
 
         return $this;
     }

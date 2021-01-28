@@ -3,9 +3,53 @@
 {% block title %}Page D'acceuil{% endblock %}
 
 {% block body %}
+<center><h1>Bienvenue sur Uberveroo!</h1></center>
+<br/>
 
+<div style="width: 100%; height: 20px; border-bottom: 1px solid black;"></div>
+<br/>
 
-Page d'acceuil de : {% if app.user %} {{app.user.nom}} {% else %} invité {% endif %}
+<p>Accès au site en tant que: {% if app.user %} {{app.user.nom}} 
+<br/> Adresse: {{ app.user.adresse }}
+<br/> Solde: {{ app.user.solde }}€{% else %} invité {% endif %}</p>
+{% if not app.user %}
+<p>Connectez vous : <a href="{{path('login') }}" class="btn btn-primary">Connexion</a></p>
+</p>
+<p>Pas de compte? inscrivez vous ici: <a href="{{path('inscription') }}" class="btn btn-primary">S'inscrire</a></p>
+{% endif %}
+<div style="width: 100%; height: 20px; border-bottom: 1px solid black;"></div>
+<br/>
+<center><a href="{{path('restaurants')}}" class="btn btn-primary">Liste des restaurants</a></center>
+<br/>
+<br/>
+<div class="row row-cols-1 row-cols-md-5">
+
+{% for resto in restaurants | slice(0,5) %} 
+ <div class="col">
+    <div class="card border-dark mb-3" style="max-width: 20rem; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+    
+      <img
+        src="https://picsum.photos/id/292/150/150"
+        class="card-img-top"
+        alt="..."
+      />
+      <div class="card-body">
+       <h5 class="card-title">{{resto.nom}}</h5>
+        <p class="card-text">
+        desc
+        </p>
+        <a href="{{path('restoShow', {'id':resto.id}) }}" class="btn btn-primary">Montrer</a>
+				{% if  app.user %}
+        <a href="{{path('supprimer', {'id':resto.id}) }}" class="btn btn-danger">Supprimer</a>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
    
+<br/>
+
 
 {% endblock %}
