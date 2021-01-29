@@ -50,4 +50,12 @@ class LoginController extends AbstractController
     public function logout(){
 
     }
+
+    /**
+     * @Route("/profil", name="profil")
+     */
+
+     public function profil(){
+        return $this->render('login/profil.html.twig');
+     }
 }
